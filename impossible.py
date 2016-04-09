@@ -1,3 +1,6 @@
+'''
+http://fivethirtyeight.com/features/can-you-solve-the-impossible-puzzle/
+'''
 class ImpossibleScenario:
     @staticmethod
     def convert_dict_to_str(input_dict):
