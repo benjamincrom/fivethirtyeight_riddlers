@@ -117,7 +117,9 @@ class ImpossibleScenario:
 if __name__ == '__main__':
     simulation = ImpossibleScenario()
 
-    print '### INITIAL STATE ###'
+    print '#################'
+    print '# INITIAL STATE #'
+    print '#################\n'
     print simulation
 
     for i in range(4):
