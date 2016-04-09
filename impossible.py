@@ -1,5 +1,3 @@
-from collections import Counter
-
 class ImpossibleScenario:
     @staticmethod
     def convert_dict_to_str(input_dict):
@@ -29,8 +27,7 @@ class ImpossibleScenario:
         )
 
     def __init__(self):
-        pair_list = [(x, y) for x in range(1, 10)
-                            for y in range(1, x + 1)]
+        pair_list = [(x, y) for x in range(1, 10) for y in range(1, x + 1)]
 
         product_set = set([pair[0] * pair[1] for pair in pair_list])
         sum_set = set([pair[0] + pair[1] for pair in pair_list])
