@@ -80,6 +80,7 @@ class ImpossibleScenario:
 
     def record_susan_answer(self, answer_bool):
         self.susan_answer_list.append(answer_bool)
+
         if answer_bool:
             self.sum_components_dict = {
                 key: value
@@ -117,7 +118,8 @@ class ImpossibleScenario:
         else:
             self.record_susan_answer(answer_bool)
 
-if __name__ == '__main__':
+
+def run_simulation_one():
     simulation = ImpossibleScenario()
 
     print '#################'
@@ -143,3 +145,28 @@ if __name__ == '__main__':
     print '# After Pete\'s turn 5 #'
     print '#######################\n'
     print simulation
+
+def run_simulation_two():
+    simulation = ImpossibleScenario()
+
+    print '#################'
+    print '# INITIAL STATE #'
+    print '#################\n'
+    print simulation
+
+    for i in range(10):
+        simulation.record_answer(False)
+        print '########################'
+        print '# After Pete\'s turn {} #'.format(i + 1)
+        print '########################\n'
+        print simulation
+
+        simulation.record_answer(False)
+        print '#########################'
+        print '# After Susan\'s turn {} #'.format(i + 1)
+        print '#########################\n'
+        print simulation
+
+if __name__ == '__main__':
+    run_simulation_one()
+    #run_simulation_two()
