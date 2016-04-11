@@ -30,21 +30,20 @@ class ImpossibleScenario:
         )
 
     def __init__(self):
-        pair_list = [(x, y) for x in range(1, 10) for y in range(1, x + 1)]
-
-        product_set = set([pair[0] * pair[1] for pair in pair_list])
-        sum_set = set([pair[0] + pair[1] for pair in pair_list])
+        pair_set = set(((x, y) for x in range(1, 10) for y in range(1, x + 1)))
+        product_set = set((pair[0] * pair[1] for pair in pair_set))
+        sum_set = set((pair[0] + pair[1] for pair in pair_set))
 
         self.pete_answer_list = []
         self.susan_answer_list = []
 
         self.product_factors_dict = {
-            this_product: [p for p in pair_list if p[0] * p[1] == this_product]
-            for this_product in product_set
+            product: set((p for p in pair_set if p[0] * p[1] == product))
+            for product in product_set
         }
 
         self.sum_components_dict = {
-            this_sum: [p for p in pair_list if p[0] + p[1] == this_sum]
+            this_sum: set((p for p in pair_set if p[0] + p[1] == this_sum))
             for this_sum in sum_set
         }
 
@@ -64,19 +63,16 @@ class ImpossibleScenario:
                 if len(value) > 1
             }
 
-        product_dict_tuples = [item
-                               for sublist in self.product_factors_dict.values()
-                               for item in sublist]
+        product_dict_tuples = set(
+            (item for subset in self.product_factors_dict.values()
+                  for item in subset)
+        )
 
-        new_components_dict = {}
-        for key, pair_list in self.sum_components_dict.iteritems():
-            new_pair_list = [pair for pair in pair_list
-                             if pair in product_dict_tuples]
-
-            if new_pair_list:
-                new_components_dict[key] = new_pair_list
-
-        self.sum_components_dict = new_components_dict
+        self.sum_components_dict = {
+            key: pair_set.intersection(product_dict_tuples)
+            for key, pair_set in self.sum_components_dict.iteritems()
+            if set(pair_set).intersection(product_dict_tuples)
+        }
 
     def record_susan_answer(self, answer_bool):
         self.susan_answer_list.append(answer_bool)
@@ -94,19 +90,16 @@ class ImpossibleScenario:
                 if len(value) > 1
             }
 
-        sum_dict_tuples = [item
-                           for sublist in self.sum_components_dict.values()
-                           for item in sublist]
+        sum_dict_tuples = set(
+            (item for subset in self.sum_components_dict.values()
+                  for item in subset)
+        )
 
-        new_products_dict = {}
-        for key, pair_list in self.product_factors_dict.iteritems():
-            new_pair_list = [pair for pair in pair_list
-                             if pair in sum_dict_tuples]
-
-            if new_pair_list:
-                new_products_dict[key] = new_pair_list
-
-        self.product_factors_dict = new_products_dict
+        self.product_factors_dict = {
+            key: set(pair_set).intersection(sum_dict_tuples)
+            for key, pair_set in self.product_factors_dict.iteritems()
+            if set(pair_set).intersection(sum_dict_tuples)
+        }
 
     def record_answer(self, answer_bool):
         is_pete_answering = (
