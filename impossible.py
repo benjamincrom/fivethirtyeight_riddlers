@@ -19,7 +19,8 @@ def run_simulation(answer_list):
 
 def box_label(label):
     bar_str = (len(label) + 4) * '#'
-    return '{}\n# {} #\n{}\n'.format(bar_str, label, bar_str)
+    return '{bar_str}\n# {label} #\n{bar_str}\n'.format(bar_str=bar_str,
+                                                        label=label)
 
 def convert_tuple_set_to_str(tuple_set):
     return ', '.join((str(t) for t in tuple_set))
