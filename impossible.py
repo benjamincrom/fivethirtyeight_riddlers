@@ -90,7 +90,7 @@ class ImpossibleScenario(object):
         self.sum_components_dict = {
             key: pair_set.intersection(product_dict_tuples)
             for key, pair_set in self.sum_components_dict.items()
-            if set(pair_set).intersection(product_dict_tuples)
+            if pair_set.intersection(product_dict_tuples)
         }
 
     def record_susan_answer(self, answer_bool):
@@ -115,9 +115,9 @@ class ImpossibleScenario(object):
         )
 
         self.product_factors_dict = {
-            key: set(pair_set).intersection(sum_dict_tuples)
+            key: pair_set.intersection(sum_dict_tuples)
             for key, pair_set in self.product_factors_dict.items()
-            if set(pair_set).intersection(sum_dict_tuples)
+            if pair_set.intersection(sum_dict_tuples)
         }
 
     def record_answer(self, answer_bool):
