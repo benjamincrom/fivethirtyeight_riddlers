@@ -1,32 +1,50 @@
 '''
 http://fivethirtyeight.com/features/can-you-solve-the-impossible-puzzle/
 '''
-class ImpossibleScenario:
-    @staticmethod
-    def convert_dict_to_str(input_dict):
-        output_str = ''
-        for key, value_tuple_list in input_dict.iteritems():
-            output_str += '     {}: '.format(key)
-            for value_tuple in value_tuple_list:
-                output_str += '{}, '.format(value_tuple)
+def run_simulation(answer_list):
+    simulation = ImpossibleScenario()
+    label = box_label('INITIAL_STATE')
+    print('{label}\n{simulation}'.format(label=label,
+                                         simulation=simulation))
 
-            output_str = '{}\n'.format(output_str[:-2])
+    for i, answer_bool in enumerate(answer_list):
+        simulation.record_answer(answer_bool)
+        name = 'Susan' if i % 2 else 'Pete'
+        turn = i // 2 + 1
+        label = box_label('After {name}\'s turn {turn}'.format(name=name,
+                                                               turn=turn))
 
-        output_str += '\n'
+        print('{label}\n{simulation}'.format(label=label,
+                                             simulation=simulation))
 
-        return output_str
+def box_label(label):
+    bar_str = (len(label) + 4) * '#'
+    return '{}\n# {} #\n{}\n'.format(bar_str, label, bar_str)
 
+def convert_tuple_set_to_str(tuple_set):
+    return ', '.join((str(t) for t in tuple_set))
+
+def convert_tuple_set_dict_to_str(input_dict):
+    output_line_generator = (
+        '{:>5}: {}\n'.format(key, convert_tuple_set_to_str(tuple_set))
+        for key, tuple_set in input_dict.items()
+    )
+
+    return ''.join(output_line_generator)
+
+
+class ImpossibleScenario(object):
     def __repr__(self):
         return (
             "Pete's answers: {}\n"
             "Susan's answers: {}\n\n"
-            "Pete's number possibilities: \n{}"
-            "Susan's number possibilities: \n{}"
+            "Pete's number possibilities:\n{}\n"
+            "Susan's number possibilities:\n{}\n"
         ).format(
             self.pete_answer_list,
             self.susan_answer_list,
-            self.convert_dict_to_str(self.product_factors_dict),
-            self.convert_dict_to_str(self.sum_components_dict)
+            convert_tuple_set_dict_to_str(self.product_factors_dict),
+            convert_tuple_set_dict_to_str(self.sum_components_dict)
         )
 
     def __init__(self):
@@ -53,13 +71,13 @@ class ImpossibleScenario:
         if answer_bool:
             self.product_factors_dict = {
                 key: value
-                for key, value in self.product_factors_dict.iteritems()
+                for key, value in self.product_factors_dict.items()
                 if len(value) == 1
             }
         else:
             self.product_factors_dict = {
                 key: value
-                for key, value in self.product_factors_dict.iteritems()
+                for key, value in self.product_factors_dict.items()
                 if len(value) > 1
             }
 
@@ -70,7 +88,7 @@ class ImpossibleScenario:
 
         self.sum_components_dict = {
             key: pair_set.intersection(product_dict_tuples)
-            for key, pair_set in self.sum_components_dict.iteritems()
+            for key, pair_set in self.sum_components_dict.items()
             if set(pair_set).intersection(product_dict_tuples)
         }
 
@@ -80,13 +98,13 @@ class ImpossibleScenario:
         if answer_bool:
             self.sum_components_dict = {
                 key: value
-                for key, value in self.sum_components_dict.iteritems()
+                for key, value in self.sum_components_dict.items()
                 if len(value) == 1
             }
         else:
             self.sum_components_dict = {
                 key: value
-                for key, value in self.sum_components_dict.iteritems()
+                for key, value in self.sum_components_dict.items()
                 if len(value) > 1
             }
 
@@ -97,7 +115,7 @@ class ImpossibleScenario:
 
         self.product_factors_dict = {
             key: set(pair_set).intersection(sum_dict_tuples)
-            for key, pair_set in self.product_factors_dict.iteritems()
+            for key, pair_set in self.product_factors_dict.items()
             if set(pair_set).intersection(sum_dict_tuples)
         }
 
@@ -112,54 +130,6 @@ class ImpossibleScenario:
             self.record_susan_answer(answer_bool)
 
 
-def run_simulation_one():
-    simulation = ImpossibleScenario()
-
-    print '#################'
-    print '# INITIAL STATE #'
-    print '#################\n'
-    print simulation
-
-    for i in range(4):
-        simulation.record_answer(False)
-        print '########################'
-        print '# After Pete\'s turn {} #'.format(i + 1)
-        print '########################\n'
-        print simulation
-
-        simulation.record_answer(False)
-        print '#########################'
-        print '# After Susan\'s turn {} #'.format(i + 1)
-        print '#########################\n'
-        print simulation
-
-    simulation.record_answer(True)
-    print '#######################'
-    print '# After Pete\'s turn 5 #'
-    print '#######################\n'
-    print simulation
-
-def run_simulation_two():
-    simulation = ImpossibleScenario()
-
-    print '#################'
-    print '# INITIAL STATE #'
-    print '#################\n'
-    print simulation
-
-    for i in range(10):
-        simulation.record_answer(False)
-        print '########################'
-        print '# After Pete\'s turn {} #'.format(i + 1)
-        print '########################\n'
-        print simulation
-
-        simulation.record_answer(False)
-        print '#########################'
-        print '# After Susan\'s turn {} #'.format(i + 1)
-        print '#########################\n'
-        print simulation
-
 if __name__ == '__main__':
-    run_simulation_one()
-    #run_simulation_two()
+    this_scenario_answer_list = [False] * 8 + [True]
+    run_simulation(this_scenario_answer_list)
