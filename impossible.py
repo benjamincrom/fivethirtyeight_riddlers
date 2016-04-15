@@ -133,3 +133,4 @@ class ImpossibleScenario(object):
 
 if __name__ == '__main__':
     run_simulation([False] * 8 + [True])
+
