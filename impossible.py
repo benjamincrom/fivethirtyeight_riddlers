@@ -134,3 +134,4 @@ class ImpossibleScenario(object):
 if __name__ == '__main__':
     import pdb; pdb.set_trace()
     run_simulation([False] * 8 + [True])
+
